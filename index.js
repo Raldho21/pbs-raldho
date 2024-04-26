@@ -25,7 +25,7 @@ app.post("/produk", (req, res) => {
   const { nama_produk, harga } = req.body;
 
   // Query SQL untuk menambahkan data produk baru ke dalam tabel Produk
-  const sql = `INSERT INTO Produk (nama_produk, harga) 
+  const sql = `INSERT INTO produk (nama_produk, harga) 
                VALUES ('${nama_produk}', ${harga})`;
 
   // Melakukan kueri ke database
@@ -50,7 +50,7 @@ app.post("/pelanggan", (req, res) => {
   const { nama_pelanggan, alamat } = req.body;
 
   // Query SQL untuk menambahkan data pelanggan baru ke dalam tabel Pelanggan
-  const sql = `INSERT INTO Pelanggan (nama_pelanggan, alamat) 
+  const sql = `INSERT INTO pelanggan (nama_pelanggan, alamat) 
                VALUES ('${nama_pelanggan}', '${alamat}')`;
 
   // Melakukan kueri ke database
@@ -72,7 +72,7 @@ app.post("/pelanggan", (req, res) => {
 // Add a route to handle GET requests for fetching data
 app.get('/produk', (req, res) => {
     // Query SQL untuk mengambil semua data dari tabel Produk
-    const sql = 'SELECT * FROM Produk';
+    const sql = 'SELECT * FROM produk';
 
     // Melakukan kueri ke database
     db.query(sql, (error, result) => {
@@ -106,7 +106,7 @@ app.get('/pelanggan', (req, res) => {
 // Add a route to handle GET requests for fetching data transaksi
 app.get('/transaksi', (req, res) => {
   // Query SQL untuk mengambil semua data dari tabel Transaksi
-  const sql = 'SELECT * FROM Transaksi';
+  const sql = 'SELECT * FROM transaksi';
 
   // Melakukan kueri ke database
   db.query(sql, (error, result) => {
@@ -126,7 +126,7 @@ app.post("/transaksi", (req, res) => {
     const { id_produk, id_pelanggan, tanggal_transaksi, jumlah_produk } = req.body;
 
     // Query SQL untuk menambahkan data transaksi baru ke dalam tabel Transaksi
-    const sql = `INSERT INTO Transaksi (id_produk, id_pelanggan, tanggal_transaksi, jumlah_produk) 
+    const sql = `INSERT INTO transaksi (id_produk, id_pelanggan, tanggal_transaksi, jumlah_produk) 
                  VALUES (${id_produk}, ${id_pelanggan}, '${tanggal_transaksi}', ${jumlah_produk})`;
 
     // Melakukan kueri ke database
