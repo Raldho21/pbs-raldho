@@ -19,128 +19,150 @@ const response = require('./request.js');
 // Middleware for parsing JSON bodies
 app.use(bodyParser.json());
 
-// Definisi endpoint POST '/produk' untuk menambahkan data produk baru
-app.post("/produk", (req, res) => {
-  // Mendapatkan data produk dari badan permintaan (request body)
-  const { nama_produk, harga } = req.body;
-
-  // Query SQL untuk menambahkan data produk baru ke dalam tabel Produk
-  const sql = `INSERT INTO produk (nama_produk, harga) 
-               VALUES ('${nama_produk}', ${harga})`;
-
-  // Melakukan kueri ke database
-  db.query(sql, (error, fields) => {
-      if (error) {
-          // Jika terjadi kesalahan, kirim respons dengan status 500 dan pesan kesalahan
-          response(500, null, `Error: ${error.message}`, res);
-      } else if (fields?.affectedRows) {
-          // Jika data berhasil ditambahkan, kirim respons dengan status 200 dan pesan sukses
-          const data = {
-              isSuccess: fields.affectedRows,
-              id: fields.insertId,
-          };
-          response(200, data, "Data produk berhasil disimpan", res);
-      }
-  });
-});
-
-// Definisi endpoint POST '/pelanggan' untuk menambahkan data pelanggan baru
-app.post("/pelanggan", (req, res) => {
-  // Mendapatkan data pelanggan dari badan permintaan (request body)
-  const { nama_pelanggan, alamat } = req.body;
-
-  // Query SQL untuk menambahkan data pelanggan baru ke dalam tabel Pelanggan
-  const sql = `INSERT INTO pelanggan (nama_pelanggan, alamat) 
-               VALUES ('${nama_pelanggan}', '${alamat}')`;
-
-  // Melakukan kueri ke database
-  db.query(sql, (error, fields) => {
-      if (error) {
-          // Jika terjadi kesalahan, kirim respons dengan status 500 dan pesan kesalahan
-          response(500, null, `Error: ${error.message}`, res);
-      } else if (fields?.affectedRows) {
-          // Jika data berhasil ditambahkan, kirim respons dengan status 200 dan pesan sukses
-          const data = {
-              isSuccess: fields.affectedRows,
-              id: fields.insertId,
-          };
-          response(200, data, "Data pelanggan berhasil disimpan", res);
-      }
-  });
-});
-
-// Add a route to handle GET requests for fetching data
-app.get('/produk', (req, res) => {
-    // Query SQL untuk mengambil semua data dari tabel Produk
-    const sql = 'SELECT * FROM produk';
-
-    // Melakukan kueri ke database
-    db.query(sql, (error, result) => {
-        if (error) {
-            // Jika terjadi kesalahan, kirim respons dengan status 500 dan pesan kesalahan
-            response(500, null, `Error: ${error.message}`, res);
-        } else {
-            // Jika kueri berhasil dieksekusi, kirim respons dengan status 200 dan data produk
-            response(200, result, 'Data produk berhasil diambil', res);
-        }
-    });
-});
-
-// Add a route to handle GET requests for fetching data
-app.get('/pelanggan', (req, res) => {
-    // Query SQL untuk mengambil semua data dari tabel Pelanggan
-    const sql = 'SELECT * FROM pelanggan';
-
-    // Melakukan kueri ke database
-    db.query(sql, (error, result) => {
-        if (error) {
-            // Jika terjadi kesalahan, kirim respons dengan status 500 dan pesan kesalahan
-            response(500, null, `Error: ${error.message}`, res);
-        } else {
-            // Jika kueri berhasil dieksekusi, kirim respons dengan status 200 dan data pelanggan
-            response(200, result, 'Data pelanggan berhasil diambil', res);
-        }
-    });
-});
-
-// Add a route to handle GET requests for fetching data transaksi
-app.get('/transaksi', (req, res) => {
-  // Query SQL untuk mengambil semua data dari tabel Transaksi
-  const sql = 'SELECT * FROM transaksi';
-
-  // Melakukan kueri ke database
-  db.query(sql, (error, result) => {
-      if (error) {
-          // Jika terjadi kesalahan, kirim respons dengan status 500 dan pesan kesalahan
-          response(500, null, `Error: ${error.message}`, res);
-      } else {
-          // Jika kueri berhasil dieksekusi, kirim respons dengan status 200 dan data transaksi
-          response(200, result, 'Data transaksi berhasil diambil', res);
-      }
-  });
-});
-
-// Definisi endpoint POST '/transaksi' untuk menambahkan data transaksi baru
-app.post("/transaksi", (req, res) => {
-    // Mendapatkan data transaksi dari badan permintaan (request body)
-    const { id_produk, id_pelanggan, tanggal_transaksi, jumlah_produk } = req.body;
-
-    // Query SQL untuk menambahkan data transaksi baru ke dalam tabel Transaksi
-    const sql = `INSERT INTO transaksi (id_produk, id_pelanggan, tanggal_transaksi, jumlah_produk) 
-                 VALUES (${id_produk}, ${id_pelanggan}, '${tanggal_transaksi}', ${jumlah_produk})`;
-
-    // Melakukan kueri ke database
+// Definisi endpoint POST '/dosen' untuk menambahkan data dosen baru
+app.post("/dosen", (req, res) => {
+    const { id_dosen, nama, gigit } = req.body;
+    const sql = `INSERT INTO dosen (id_dosen, nama, gigit) VALUES (${id_dosen}, '${nama}', '${gigit}')`;
     db.query(sql, (error, fields) => {
         if (error) {
-            // Jika terjadi kesalahan, kirim respons dengan status 500 dan pesan kesalahan
             response(500, null, `Error: ${error.message}`, res);
         } else if (fields?.affectedRows) {
-            // Jika data berhasil ditambahkan, kirim respons dengan status 200 dan pesan sukses
             const data = {
                 isSuccess: fields.affectedRows,
                 id: fields.insertId,
             };
-            response(200, data, "Transaksi berhasil disimpan", res);
+            response(200, data, "Data dosen berhasil disimpan", res);
+        }
+    });
+});
+
+// Definisi endpoint POST '/matakuliah' untuk menambahkan data matakuliah baru
+app.post("/matakuliah", (req, res) => {
+    const { id_matakuliah, nama_matakuliah, kode_matakuliah } = req.body;
+    const sql = `INSERT INTO matakuliah (id_matakuliah, nama_matakuliah, kode_matakuliah) 
+                 VALUES (${id_matakuliah}, '${nama_matakuliah}', '${kode_matakuliah}')`;
+    db.query(sql, (error, fields) => {
+        if (error) {
+            response(500, null, `Error: ${error.message}`, res);
+        } else if (fields?.affectedRows) {
+            const data = {
+                isSuccess: fields.affectedRows,
+                id: fields.insertId,
+            };
+            response(200, data, "Data matakuliah berhasil disimpan", res);
+        }
+    });
+});
+
+// Definisi endpoint POST '/mahasiswa' untuk menambahkan data mahasiswa baru
+app.post("/mahasiswa", (req, res) => {
+    const { id_siswa, nama, nim } = req.body;
+    const sql = `INSERT INTO mahasiswa (id_siswa, nama, nim) VALUES (${id_siswa}, '${nama}', '${nim}')`;
+    db.query(sql, (error, fields) => {
+        if (error) {
+            response(500, null, `Error: ${error.message}`, res);
+        } else if (fields?.affectedRows) {
+            const data = {
+                isSuccess: fields.affectedRows,
+                id: fields.insertId,
+            };
+            response(200, data, "Data mahasiswa berhasil disimpan", res);
+        }
+    });
+});
+
+// Definisi endpoint POST '/dosen_matakuliah' untuk menambahkan data relasi dosen dan matakuliah baru
+app.post("/dosen_matakuliah", (req, res) => {
+    const { id_dosen, id_matakuliah } = req.body;
+    const sql = `INSERT INTO dosen_matakuliah (id_dosen, id_matakuliah) 
+                 VALUES (${id_dosen}, ${id_matakuliah})`;
+    db.query(sql, (error, fields) => {
+        if (error) {
+            response(500, null, `Error: ${error.message}`, res);
+        } else if (fields?.affectedRows) {
+            const data = {
+                isSuccess: fields.affectedRows,
+                id: fields.insertId,
+            };
+            response(200, data, "Data relasi dosen dan matakuliah berhasil disimpan", res);
+        }
+    });
+});
+
+// Definisi endpoint POST '/mahasiswa_matakuliah' untuk menambahkan data relasi mahasiswa dan matakuliah baru
+app.post("/mahasiswa_matakuliah", (req, res) => {
+    const { id_siswa, id_matakuliah } = req.body;
+    const sql = `INSERT INTO mahasiswa_matakuliah (id_siswa, id_matakuliah) 
+                 VALUES (${id_siswa}, ${id_matakuliah})`;
+    db.query(sql, (error, fields) => {
+        if (error) {
+            response(500, null, `Error: ${error.message}`, res);
+        } else if (fields?.affectedRows) {
+            const data = {
+                isSuccess: fields.affectedRows,
+                id: fields.insertId,
+            };
+            response(200, data, "Data relasi mahasiswa dan matakuliah berhasil disimpan", res);
+        }
+    });
+});
+
+// Add a route to handle GET requests for fetching data dosen
+app.get('/dosen', (req, res) => {
+    const sql = 'SELECT * FROM dosen';
+    db.query(sql, (error, result) => {
+        if (error) {
+            response(500, null, `Error: ${error.message}`, res);
+        } else {
+            response(200, result, 'Data dosen berhasil diambil', res);
+        }
+    });
+});
+
+// Add a route to handle GET requests for fetching data matakuliah
+app.get('/matakuliah', (req, res) => {
+    const sql = 'SELECT * FROM matakuliah';
+    db.query(sql, (error, result) => {
+        if (error) {
+            response(500, null, `Error: ${error.message}`, res);
+        } else {
+            response(200, result, 'Data matakuliah berhasil diambil', res);
+        }
+    });
+});
+
+// Add a route to handle GET requests for fetching data mahasiswa
+app.get('/mahasiswa', (req, res) => {
+    const sql = 'SELECT * FROM mahasiswa';
+    db.query(sql, (error, result) => {
+        if (error) {
+            response(500, null, `Error: ${error.message}`, res);
+        } else {
+            response(200, result, 'Data mahasiswa berhasil diambil', res);
+        }
+    });
+});
+
+// Add a route to handle GET requests for fetching data dosen_matakuliah
+app.get('/dosen_matakuliah', (req, res) => {
+    const sql = 'SELECT * FROM dosen_matakuliah';
+    db.query(sql, (error, result) => {
+        if (error) {
+            response(500, null, `Error: ${error.message}`, res);
+        } else {
+            response(200, result, 'Data relasi dosen dan matakuliah berhasil diambil', res);
+        }
+    });
+});
+
+// Add a route to handle GET requests for fetching data mahasiswa_matakuliah
+app.get('/mahasiswa_matakuliah', (req, res) => {
+    const sql = 'SELECT * FROM mahasiswa_matakuliah';
+    db.query(sql, (error, result) => {
+        if (error) {
+            response(500, null, `Error: ${error.message}`, res);
+        } else {
+            response(200, result, 'Data relasi mahasiswa dan matakuliah berhasil diambil', res);
         }
     });
 });
